@@ -1,0 +1,137 @@
+% !TEX TS-program = xelatexmk
+
+% Options to be appended to those given when loading the relevant packages elsewhere:  
+\PassOptionsToPackage{unicode=true}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+
+\documentclass[12pt,USenglish,letterpaper,landscape]{article}
+
+\usepackage{iftex}
+\RequireXeTeX
+
+\usepackage[margin=0.65in,landscape]{geometry}
+
+\usepackage{fontspec}
+\usepackage{unicode-math}
+
+\IfFontExistsTF{Calibri}{%
+  \setmainfont{Calibri}%
+}{% else
+  \usepackage{lmodern}%
+}
+\IfFontExistsTF{Menlo}{%
+  \setmonofont{Menlo}%
+}{% else
+  \relax%
+}
+
+% Use the `upquote` package if it's available to get straight quotes in `verbatim` environments:  
+\IfFileExists{upquote.sty}{%
+  \usepackage{upquote}%
+}
+
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+  pdfauthor={Bryce Glover},
+  colorlinks=true,
+  linkcolor=Maroon,
+  citecolor=Blue,
+  urlcolor=Blue,
+  breaklinks=true
+}
+\urlstyle{same}
+\VerbatimFootnotes
+
+% Load `polyglossia` as late as possible, as it _could_ invoke `bidi` if you use a language written from right to left (Hebrew or Arabic, for example:)  
+\usepackage{polyglossia}
+\setmainlanguage[variant=us]{english}
+
+\usepackage{titling,calc,xparse}
+
+%Boilerplate code to allow the declaration, definition, and use of floating-point numeric variables:  
+\ExplSyntaxOn
+  \NewDocumentCommand{\declarefpvar}{m}{
+    \fp_new:c { g_var_#1_fp }
+  }
+  \NewDocumentCommand{\setfpvar}{mm}{
+    \fp_gset:cn { g_var_#1_fp } { #2 }
+  }
+  \DeclareExpandableDocumentCommand{\usefpvar}{m}{
+    \fp_use:c { g_var_#1_fp }
+  }
+\ExplSyntaxOff
+
+% Additional font sizes:  
+\newlength{\titlefontsize}
+\setlength{\titlefontsize}{64pt}
+\newlength{\subtitlefontsize}
+\setlength{\subtitlefontsize}{28pt}
+\declarefpvar{baselinescalingfactor}
+\setfpvar{baselinescalingfactor}{0.5}
+\newlength{\titlebaselineskip}
+\setlength{\titlebaselineskip}{\usefpvar{baselinescalingfactor}\titlefontsize}
+\newlength{\subtitlebaselineskip}
+\setlength{\subtitlebaselineskip}{\usefpvar{baselinescalingfactor}\subtitlefontsize}
+
+% Title header setup:  
+\pretitle{%
+  \begin{center}%
+    \fontsize{\titlefontsize}{\titlebaselineskip}\selectfont%
+}
+\title{C++ Kokomo}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+      \par%
+    \end{center}%
+    \smallskip
+    \begin{center}%
+      \fontsize{\subtitlefontsize}{\subtitlebaselineskip}\selectfont%
+      #1%
+      \par%
+    \end{center}%
+    \vskip 0.5em%
+  }%
+}
+\subtitle{Come discuss C++ with us!  }
+\preauthor{}
+\author{}
+\postauthor{}
+\predate{}
+\date{}
+\postdate{}
+
+\pagestyle{empty}
+
+\begin{document}
+  \clearpage
+  \vspace*{\fill}
+  \begin{center}
+    \begin{minipage}{\textwidth}
+      \maketitle
+      \thispagestyle{empty} % `\maketitle` sets `\thispagestyle` to `plain` internally, hence the need to change it back to the globally set `empty` here for this page as well.  
+      
+      \begin{center}
+        \Large
+        \begin{tabular}{c}
+          \begin{tabular}{lr}
+            \textbf{Where:}  & TBD.  \\
+            \textbf{When:}   & TBD.  
+          \end{tabular} \\
+          \begin{tabular}{c}
+            \textbf{Who:}  \\
+            Current and prospective C++ programmers of all ages!  
+          \end{tabular}
+        \end{tabular}
+      \end{center}
+      \begin{center}
+        \bigskip
+             Visit the 'C++ Kokomo' Meetup page at \url{https://www.meetup.com/CPP-Kokomo/} for more details as they emerge.  
+      \end{center}
+    \end{minipage}
+  \end{center}
+  \vfill
+  \clearpage
+\end{document}
